@@ -1,0 +1,423 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Deniz Aygun
+# This file is distributed under the same license as the resource_monitor package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: resource_monitor\n"
+"Report-Msgid-Bugs-To: aygund@pm.me\n"
+"POT-Creation-Date: 2026-09-29 01:13+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: __init__.py:67
+msgid "Resource Monitor"
+msgstr ""
+
+#: __init__.py:69
+msgid ""
+"Reports processor load, memory, drives, GPU, wireless network, uptime, and "
+"operating system information."
+msgstr ""
+
+#. Translators: Label for the setting that selects the GPU temperature unit.
+#: __init__.py:101
+msgid "GPU temperature unit"
+msgstr ""
+
+#. Translators: An option for the GPU temperature unit.
+#: __init__.py:104
+msgid "Celsius"
+msgstr ""
+
+#. Translators: An option for the GPU temperature unit.
+#: __init__.py:106
+msgid "Fahrenheit"
+msgstr ""
+
+#. Translators: Label for the setting that selects how wi-fi connects
+#. and disconnects are reported.
+#: __init__.py:114
+msgid "Wi-fi connect/disconnect notification"
+msgstr ""
+
+#. Translators: An option for the wi-fi notification setting.
+#: __init__.py:117
+msgid "off"
+msgstr ""
+
+#. Translators: An option for the wi-fi notification setting.
+#: __init__.py:119
+msgid "message"
+msgstr ""
+
+#. Translators: An option for the wi-fi notification setting.
+#: __init__.py:121
+msgid "sound"
+msgstr ""
+
+#. Translators: An option for the wi-fi notification setting.
+#: __init__.py:123
+msgid "both"
+msgstr ""
+
+#. Translators: Label for the setting that leaves the command layer
+#. automatically when no layer key has been pressed for a while.
+#: __init__.py:131
+msgid "Leave the command layer after this many idle seconds (0 = never)"
+msgstr ""
+
+#. Translators: Description of the command that enters the command layer.
+#: __init__.py:154
+msgid "Enters the Resource Monitor command layer."
+msgstr ""
+
+#. Translators: Description of the key that leaves the command layer.
+#: __init__.py:191
+msgid "Leaves the Resource Monitor command layer."
+msgstr ""
+
+#. Translators: Reported when another Orca mode prevents entering the layer.
+#: __init__.py:220
+msgid "The command layer cannot be used while another Orca mode is active."
+msgstr ""
+
+#: __init__.py:226
+msgid ""
+"The command layer is not available in this version of Orca. Use Orca+Shift+1 "
+"through Orca+Shift+9 instead."
+msgstr ""
+
+#. Translators: Reported after resource information was copied to the clipboard.
+#: __init__.py:275
+msgid "Copied to clipboard"
+msgstr ""
+
+#. Translators: Reported when resource information could not be copied.
+#: __init__.py:278
+msgid "Could not copy to the clipboard"
+msgstr ""
+
+#. Translators: Used when a wireless network does not broadcast its name.
+#. Translators: Reported for a hidden network, whose name is not broadcast.
+#: __init__.py:287 reports.py:123
+msgid "hidden network"
+msgstr ""
+
+#: __init__.py:289
+#, python-brace-format
+msgid "Connected to {}"
+msgstr ""
+
+#: __init__.py:291
+#, python-brace-format
+msgid "Disconnected from {}"
+msgstr ""
+
+#: __init__.py:293
+msgid "A wireless device has been enabled"
+msgstr ""
+
+#: __init__.py:295
+msgid "A wireless device has been disabled"
+msgstr ""
+
+#. Translators: A size smaller than one kilobyte.
+#: formatting.py:60
+#, python-brace-format
+msgid "{count} byte"
+msgid_plural "{count} bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Translators: system uptime in days.
+#: formatting.py:72
+#, python-brace-format
+msgid "{days:d} day"
+msgid_plural "{days:d} days"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Translators: system uptime in hours.
+#: formatting.py:74
+#, python-brace-format
+msgid "{hours:d} hour"
+msgid_plural "{hours:d} hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Translators: system uptime in minutes.
+#: formatting.py:76
+#, python-brace-format
+msgid "{minutes:d} minute"
+msgid_plural "{minutes:d} minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Translators: system uptime in seconds.
+#: formatting.py:78
+#, python-brace-format
+msgid "{seconds:d} second"
+msgid_plural "{seconds:d} seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+#. Translators: Fahrenheit temperature unit appended to a GPU temperature value.
+#: formatting.py:89
+msgid "degrees Fahrenheit"
+msgstr ""
+
+#. Translators: Celsius temperature unit appended to a GPU temperature value.
+#: formatting.py:93
+msgid "degrees Celsius"
+msgstr ""
+
+#. Translators: Used in place of a value the system did not report.
+#: reports.py:21
+msgid "unknown"
+msgstr ""
+
+#. Translators: presents the overall summary of resource usage, such as CPU load and RAM usage.
+#: reports.py:28
+#, python-brace-format
+msgid "{ramPercent}% RAM used, CPU at {cpuPercent}%."
+msgstr ""
+
+#. Translators: Shows average load of the processor on single-core systems.
+#: reports.py:40
+#, python-brace-format
+msgid "{avgLoad}% CPU load."
+msgstr ""
+
+#. Translators: Shows the load of one CPU core (example: Core 1: 50%).
+#: reports.py:43
+#, python-brace-format
+msgid "Core {coreNumber}: {corePercent}%"
+msgstr ""
+
+#. Translators: Shows average load of the processor and the load for each core
+#. on multi-core systems.
+#: reports.py:51
+#, python-brace-format
+msgid "{avgLoad}% average CPU load, {cores}."
+msgstr ""
+
+#. Translators: Shows RAM (physical memory) usage.
+#: reports.py:58
+#, python-brace-format
+msgid "Physical: {physicalUsed} of {physicalTotal} used ({physicalPercent}%)."
+msgstr ""
+
+#. Translators: Reported when the system has no swap space.
+#: reports.py:65
+msgid "Swap: not configured."
+msgstr ""
+
+#. Translators: Shows swap space usage.
+#: reports.py:68
+#, python-brace-format
+msgid "Swap: {swapUsed} of {swapTotal} used ({swapPercent}%)."
+msgstr ""
+
+#. Translators: word used to describe a network drive.
+#: reports.py:79
+msgid "network"
+msgstr ""
+
+#. Translators: Reported when a drive cannot be reached, such as an offline network share.
+#: reports.py:82
+#, python-brace-format
+msgid "{driveName} ({driveType} drive): not available."
+msgstr ""
+
+#. Translators: Shows the mount point, file system or drive type, used capacity,
+#. and total capacity of a drive (example: / (btrfs drive): 40.00 GB of 100.00 GB used (40%).).
+#: reports.py:88
+#, python-brace-format
+msgid ""
+"{driveName} ({driveType} drive): {usedSpace} of {totalSpace} used ({percent}"
+"%)."
+msgstr ""
+
+#. Translators: Reported when no drives could be found.
+#: reports.py:102
+msgid "No drives found."
+msgstr ""
+
+#: reports.py:110
+msgid "No wireless devices"
+msgstr ""
+
+#: reports.py:112
+msgid "No wireless connections"
+msgstr ""
+
+#: reports.py:115 resources.py:123
+msgid "Unable to get wireless information"
+msgstr ""
+
+#: reports.py:117
+msgid "No authentication (Open)"
+msgstr ""
+
+#. Translators: Presents the wireless network name and security type when the
+#. signal strength is not known.
+#: reports.py:127
+#, python-brace-format
+msgid "Connected to {}, signal strength unknown, security type: {}"
+msgstr ""
+
+#. Translators: Presents the wireless network name, signal strength, and security type.
+#: reports.py:129
+#, python-brace-format
+msgid "Connected to {}, signal strength: {}%, security type: {}"
+msgstr ""
+
+#. Translators: Presents the operating system (example: Arch Linux (x86_64), kernel 6.9.1-arch1-1).
+#: reports.py:138
+#, python-brace-format
+msgid "{distribution} ({architecture}), kernel {kernel}"
+msgstr ""
+
+#. Translators: Presents the desktop and display server (example: GNOME on Wayland).
+#: reports.py:145
+#, python-brace-format
+msgid "{desktop} on {sessionType}"
+msgstr ""
+
+#: reports.py:162
+msgid "No GPU information available."
+msgstr ""
+
+#: reports.py:165
+msgid "No GPU data available."
+msgstr ""
+
+#. Translators: Shows GPU temperature when the driver does not report usage.
+#: reports.py:175
+#, python-brace-format
+msgid "GPU {gpuNumber}: usage unknown, temp {temperature}."
+msgstr ""
+
+#. Translators: Shows GPU usage and temperature (example: GPU 1: usage 25%, temp 45 degrees Celsius.).
+#: reports.py:180
+#, python-brace-format
+msgid "GPU {gpuNumber}: usage {usage}%, temp {temperature}."
+msgstr ""
+
+#: reports.py:191
+msgid "Unable to get GPU information."
+msgstr ""
+
+#. Translators: Shows GPU memory usage (example: 2.00 GB of 8.00 GB used (25%)).
+#: reports.py:205
+#, python-brace-format
+msgid "{used} of {total} used ({percent}%)"
+msgstr ""
+
+#. Translators: Shows GPU memory usage (example: GPU 1: 2.00 GB of 8.00 GB used (25%).).
+#: reports.py:211
+#, python-brace-format
+msgid "GPU {gpuNumber}: {memoryInfo}."
+msgstr ""
+
+#: reports.py:215 reports.py:216
+msgid "Unable to get GPU memory information."
+msgstr ""
+
+#. Translators: Appended to every resource command description.
+#: resources.py:59
+msgid "If pressed twice, copies the information to the clipboard."
+msgstr ""
+
+#. Translators: Description of the overall resource usage command.
+#: resources.py:66
+msgid "Presents used RAM and average processor load."
+msgstr ""
+
+#. Translators: Reported when the overall resource usage command fails.
+#: resources.py:69
+msgid "Failed to get resource usage information."
+msgstr ""
+
+#: resources.py:78
+msgid "Presents the average processor load and the load of each core."
+msgstr ""
+
+#. Translators: Reported when the processor command fails.
+#: resources.py:82
+msgid "Failed to get processor information."
+msgstr ""
+
+#: resources.py:91
+msgid "Presents the used and total space for both physical memory and swap."
+msgstr ""
+
+#. Translators: Reported when the memory command fails.
+#: resources.py:95
+msgid "Failed to get memory information."
+msgstr ""
+
+#: resources.py:104
+msgid "Presents the used and total space of the local and network drives."
+msgstr ""
+
+#. Translators: Reported when the drives command fails.
+#: resources.py:108
+msgid "Failed to get drive information."
+msgstr ""
+
+#: resources.py:118
+msgid ""
+"Announces the wireless network name (SSID), signal strength, and security "
+"type."
+msgstr ""
+
+#: resources.py:132
+msgid ""
+"Announces the Linux distribution, processor architecture, kernel, and "
+"desktop."
+msgstr ""
+
+#. Translators: Reported when the operating system command fails.
+#: resources.py:136
+msgid "Failed to get operating system information."
+msgstr ""
+
+#. Translators: Description of the uptime command.
+#: resources.py:144
+msgid "Announces the system's uptime."
+msgstr ""
+
+#. Translators: Obtaining uptime failed.
+#: resources.py:147
+msgid "Failed to get the system's uptime."
+msgstr ""
+
+#. Translators: Description of the GPU usage and temperature command.
+#: resources.py:155
+msgid "Announces GPU usage and temperature."
+msgstr ""
+
+#. Translators: Message reported when the GPU command fails unexpectedly.
+#: resources.py:158
+msgid "Failed to get GPU information."
+msgstr ""
+
+#. Translators: Description of the GPU memory command.
+#: resources.py:166
+msgid "Announces GPU memory usage."
+msgstr ""
+
+#. Translators: Message reported when the GPU memory command fails unexpectedly.
+#: resources.py:169
+msgid "Failed to get GPU memory information."
+msgstr ""

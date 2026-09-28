@@ -1,0 +1,33 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+
+# gettext backups made by msgmerge or editors. Compiled .mo catalogs are
+# committed on purpose: Orca loads them from the installed package.
+*.po~
+*.pot~
+
+# Build and packaging output
+build/
+dist/
+*.tar.gz
+*.zip
+
+# Editors, IDEs, and tools
+.idea/
+.vscode/
+.cursor/
+.claude/
+.codegraph/
+*.swp
+*~
+.DS_Store

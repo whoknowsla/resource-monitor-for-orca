@@ -31,22 +31,29 @@ Wi-Fi connect and disconnect notifications need NetworkManager.
 
 ```sh
 ./install.sh
-orca --approve-extension resource_monitor
 ```
 
-Then restart Orca. `install.sh` copies the `resource_monitor` package into
-`~/.local/share/orca/extensions/` (pass `--yes` to replace an existing copy
-without being asked). You can copy the folder yourself instead:
+Then restart Orca (`orca --replace &`). `install.sh` copies the
+`resource_monitor` package into `~/.local/share/orca/extensions/`, recompiles
+its translations when GNU gettext's `msgfmt` is available, and approves it with
+`orca --approve-extension resource_monitor`. Pass `--yes` to replace an
+existing copy without being asked.
+
+To remove it, run `./install.sh --uninstall`: it revokes the approval and
+deletes the installed copy.
+
+You can copy the folder yourself instead, then approve it:
 
 ```sh
 mkdir -p ~/.local/share/orca/extensions
 cp -r resource_monitor ~/.local/share/orca/extensions/
+orca --approve-extension resource_monitor
 ```
 
 Approval is required for security: Orca records the extension's SHA256 hash.
-Any change to the package contents changes that hash, so re-approve after
-updating. You can also approve, disable, or delete the extension on the
-**User Extensions** page of Orca's preferences.
+Any change to the package contents changes that hash, so run `install.sh`
+again (or re-approve) after updating. You can also approve, disable, or delete
+the extension on the **User Extensions** page of Orca's preferences.
 
 ## The command layer
 

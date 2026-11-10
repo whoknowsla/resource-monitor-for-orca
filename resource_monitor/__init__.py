@@ -66,8 +66,9 @@ class ResourceMonitor(Extension):
 
     GROUP_LABEL = _("Resource Monitor")
     DESCRIPTION = _(
-        "Reports processor load, memory, drives, GPU, wireless network, uptime, "
-        "and operating system information."
+        "Reports processor load, memory, drives, GPU, wireless network, battery, "
+        "audio devices, load averages, temperatures, uptime, and operating system "
+        "information."
     )
     VERSION = "1.0.0"
     AUTHOR = "Deniz Aygun"
@@ -157,9 +158,17 @@ class ResourceMonitor(Extension):
             )
         ]
         for resource in RESOURCES:
-            binding = keybindings.KeyBinding(
-                resource.shortcut,
-                keybindings.ORCA_SHIFT_MODIFIER_MASK,
+            # A resource may have no default shortcut: the digits run out at
+            # nine. It is still registered as a command, so it appears in
+            # Orca's keybinding preferences and can be given a key there, and
+            # it always has a key inside the layer.
+            binding = (
+                keybindings.KeyBinding(
+                    resource.shortcut,
+                    keybindings.ORCA_SHIFT_MODIFIER_MASK,
+                )
+                if resource.shortcut
+                else None
             )
             commands.append(
                 KeyboardCommand(

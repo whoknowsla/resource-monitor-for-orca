@@ -100,15 +100,39 @@ class CommandTests(unittest.TestCase):
         self.assertEqual(names[0], ENTER_LAYER_COMMAND)
         bindings = [command.get_default_keybinding(True) for command in commands]
         self.assertEqual(bindings[0].keysymstring, "e")
-        digits = sorted(binding.keysymstring for binding in bindings[1:])
-        self.assertEqual(digits, [str(digit) for digit in range(1, 10)])
+        # Some resources have no default shortcut, because the digits run out
+        # at nine; those commands are registered unbound so they can be given
+        # a key in Orca's preferences.
+        bound = [binding for binding in bindings if binding is not None]
+        digits = sorted(binding.keysymstring for binding in bound[1:])
+        self.assertEqual(digits, [str(digit) for digit in range(0, 10)])
         self.assertTrue(
-            all(binding.modifiers == keybindings.ORCA_SHIFT_MODIFIER_MASK for binding in bindings)
+            all(binding.modifiers == keybindings.ORCA_SHIFT_MODIFIER_MASK for binding in bound)
         )
         self.assertEqual(
-            [command.get_default_keybinding(False).keysymstring for command in commands],
-            [binding.keysymstring for binding in bindings],
+            [
+                command.get_default_keybinding(False).keysymstring
+                if command.get_default_keybinding(False) is not None
+                else None
+                for command in commands
+            ],
+            [
+                binding.keysymstring if binding is not None else None
+                for binding in bindings
+            ],
         )
+
+    def test_a_resource_without_a_shortcut_is_still_a_command(self):
+        commands = {
+            command.get_name(): command for command in self.extension._get_commands()
+        }
+        for resource in RESOURCES:
+            command = commands[f"resource_monitor_{resource.name}"]
+            if resource.shortcut:
+                self.assertIsNotNone(command.get_default_keybinding(True))
+            else:
+                self.assertIsNone(command.get_default_keybinding(True))
+                self.assertIsNone(command.get_default_keybinding(False))
 
     def test_layer_keys_match_the_nvda_add_on(self):
         keys = {(key.keysym, key.modifiers) for key in self.extension._layer_keys()}
@@ -117,7 +141,25 @@ class CommandTests(unittest.TestCase):
             (letter, no_modifier) for letter in ("space", "c", "m", "d", "w", "o", "u", "g")
         }
         expected |= {("g", keybindings.SHIFT_MODIFIER_MASK), ("Escape", no_modifier)}
-        self.assertEqual(keys, expected)
+        # A subset, not an equality: the keys below report things the NVDA
+        # add-on does not have, so they cannot match it.
+        self.assertTrue(expected <= keys)
+
+    def test_layer_keys_for_the_reports_nvda_does_not_have(self):
+        keys = {(key.keysym, key.modifiers) for key in self.extension._layer_keys()}
+        no_modifier = keybindings.NO_MODIFIER_MASK
+        expected = {(letter, no_modifier) for letter in ("b", "a", "l")}
+        expected |= {("a", keybindings.SHIFT_MODIFIER_MASK)}
+        self.assertTrue(expected <= keys)
+
+    def test_every_layer_key_is_unique(self):
+        keys = [(key.keysym, key.modifiers) for key in self.extension._layer_keys()]
+        self.assertEqual(len(keys), len(set(keys)))
+
+    def test_every_resource_has_a_layer_key(self):
+        keys = {(key.keysym, key.modifiers) for key in self.extension._layer_keys()}
+        for resource in RESOURCES:
+            self.assertIn((resource.layer_key, resource.layer_modifiers), keys)
 
     def test_every_resource_has_a_description(self):
         for resource in RESOURCES:

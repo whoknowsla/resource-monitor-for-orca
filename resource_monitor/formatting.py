@@ -80,6 +80,34 @@ def format_duration(total_seconds: float) -> str:
     return ", ".join(parts)
 
 
+def format_time_remaining(total_seconds: float) -> str:
+    """Returns a rough duration in hours and minutes, for a battery estimate.
+
+    Deliberately not format_duration: that always names days, hours, minutes,
+    and seconds, which is right for an uptime read once and wrong for a
+    battery estimate read often. A battery estimate is also not accurate to
+    the second, so reading seconds aloud would claim a precision it does not
+    have.
+    """
+
+    minutes_left = max(0, int(total_seconds) // SECONDS_PER_MINUTE)
+    hours, minutes = divmod(minutes_left, 60)
+    if hours and minutes:
+        # Translators: A duration in hours and minutes (example: 2 hours, 15 minutes).
+        return _("{hours}, {minutes}").format(
+            hours=ngettext("{hours:d} hour", "{hours:d} hours", hours).format(hours=hours),
+            minutes=ngettext(
+                "{minutes:d} minute", "{minutes:d} minutes", minutes
+            ).format(minutes=minutes),
+        )
+    if hours:
+        return ngettext("{hours:d} hour", "{hours:d} hours", hours).format(hours=hours)
+    # Translators: A duration of under an hour, in minutes.
+    return ngettext("{minutes:d} minute", "{minutes:d} minutes", minutes).format(
+        minutes=minutes
+    )
+
+
 def format_temperature(celsius: float, unit: str) -> str:
     """Returns a temperature given in Celsius, in the requested unit."""
 

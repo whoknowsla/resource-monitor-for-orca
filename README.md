@@ -2,8 +2,9 @@
 
 A Linux port of the [Resource Monitor add-on for NVDA](https://github.com/kefaslungu/resourceMonitor),
 built as an Orca user extension. It reports processor load, memory, drives, GPU,
-wireless network, uptime, and operating system information, through a command
-layer or through direct shortcuts.
+wireless network, battery, audio devices, load averages, temperatures, uptime,
+and operating system information, through a command layer or through direct
+shortcuts.
 
 - Version: 1.0.0
 - Author: Deniz Aygun
@@ -13,9 +14,10 @@ layer or through direct shortcuts.
 ## Requirements
 
 - Orca with user-extension support (`~/.local/share/orca/extensions/`).
-- Nothing else is required. Processor, memory, uptime, drive, and operating
-  system information come straight from the kernel (`/proc`, `/sys`,
-  `statvfs`), so no third-party Python packages are needed.
+- Nothing else is required. Processor, memory, uptime, drive, battery, load
+  average, temperature, and operating system information come straight from
+  the kernel (`/proc`, `/sys`, `statvfs`), so no third-party Python packages
+  are needed.
 - Optional helpers, each used only if present:
 
 | Tool | Package (most distributions) | Used for |
@@ -23,9 +25,14 @@ layer or through direct shortcuts.
 | `nmcli` | NetworkManager | Wi-Fi name, signal, and security type |
 | `iw` | iw | Wi-Fi name and signal when NetworkManager is not running |
 | `nvidia-smi` | NVIDIA driver utilities | NVIDIA GPU usage, temperature, and memory |
+| `wpctl` | WirePlumber (PipeWire) | Audio device name, volume, and mute state |
+| `pactl` | PulseAudio utilities | Audio device, volume, and mute state when `wpctl` is absent |
 
 AMD GPUs are read from the `amdgpu` driver's sysfs files and need no tool.
-Wi-Fi connect and disconnect notifications need NetworkManager.
+Wi-Fi connect and disconnect notifications need NetworkManager. `wpctl` is
+preferred for audio and gives the readable device name; `pactl` also works
+against PipeWire through its PulseAudio interface, and reports the device's
+internal name.
 
 ## Installation
 
@@ -71,6 +78,10 @@ brailles "Resource Monitor". Then press:
 | O | Operating system: distribution, architecture, kernel, desktop and session |
 | U | System uptime |
 | W | Wi-Fi: network name (SSID), signal strength, security type |
+| B | Battery: charge, whether it is charging, and the time remaining |
+| A | Audio output: device and volume |
+| Shift+A | Audio input: device and volume |
+| L | Load averages and component temperatures |
 | Escape | Leaves the layer (low tone) |
 
 Resource keys keep the layer active so they can be repeated. **Pressing a
@@ -96,6 +107,12 @@ layer, pressing a shortcut twice copies the information to the clipboard.
 | Orca+Shift+7 | Uptime |
 | Orca+Shift+8 | GPU usage and temperature |
 | Orca+Shift+9 | GPU memory |
+| Orca+Shift+0 | Battery |
+
+Audio output, audio input, and load averages have no default shortcut, because
+the digits run out at nine. They are still registered as commands, so they
+appear unbound in Orca's key bindings preferences and can be given a key
+there, and they always have a layer key.
 
 Orca+Shift+1, 2, 3, 4, 6, and 7 match the NVDA add-on's legacy shortcuts. The
 entry key and the direct shortcuts can be changed in Orca's key bindings
@@ -134,12 +151,46 @@ Monitor**, and press the settings button.
   WPA3-SAE, WPA2-Enterprise, ...). They describe what the access point
   offers; mixed networks are reported as, for example, WPA2-PSK/WPA3-SAE.
 - **Uptime**: includes time spent suspended, like `/proc/uptime`.
+- **Battery**: read from `/sys/class/power_supply`. A battery exposes either
+  `energy_*` with `power_now` or `charge_*` with `current_now`; within one
+  family the units cancel, so the time remaining is a division either way,
+  and the families are never mixed because that would need the voltage and
+  would turn a reading into a guess. The charge is measured against
+  `energy_full`, the capacity the battery has now, not `energy_full_design`,
+  which it had when new -- on a worn battery the design figure reports a
+  charge that never reaches 100%. Two batteries are added together, and
+  charging takes precedence over discharging, because on such a machine one
+  battery can feed the other. No estimate is given when the rate is zero,
+  which is also why a full battery reports no time remaining.
+- **Audio**: the default output and input device, its volume, and whether it
+  is muted, through `wpctl` or `pactl`. A volume above 100% is a state the
+  sound server allows, so it is reported rather than clamped. `pactl` reports
+  a percentage per channel and the first is used, because one figure spoken
+  aloud is clearer than several.
+- **Load averages**: from `/proc/loadavg`, over one, five, and fifteen
+  minutes. This is not the same reading as processor load, and both are worth
+  having: processor load is how busy the cores are now, while the load average
+  is how many tasks have been waiting. A machine can sit at a low processor
+  load with a high load average when tasks are blocked on disk or network,
+  which is exactly the state where it is useful to know why everything feels
+  slow.
+- **Temperatures**: from `hwmon`, which labels its sensors, falling back to
+  the thermal zones where there is nothing else. When a processor or graphics
+  sensor is present only those are reported: a desktop also exposes
+  temperatures for network cards, drives and chipsets, and padding the list
+  with them buries the readings the question was about -- which matters more
+  when the list is spoken than when it is seen. Readings outside -40 to 150
+  degrees Celsius are discarded, because a disconnected probe commonly reports
+  -274 and some sensors report a fixed critical value in the thousands.
 
 Wi-Fi notifications follow NetworkManager: connecting, disconnecting, and
 turning the wireless radio on or off. They use the NVDA add-on's sounds.
 
 ## Differences from the NVDA add-on
 
+- Battery, audio devices, load averages, and temperatures are reported, none
+  of which the NVDA add-on covers. Battery and load average come from the
+  kernel and need no helper; audio needs `wpctl` or `pactl`.
 - Linux terms replace Windows ones: swap instead of virtual memory, mount
   points instead of drive letters, distribution and kernel instead of Windows
   build.

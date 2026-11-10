@@ -8,15 +8,21 @@ from dataclasses import dataclass
 
 from orca import keybindings
 
+from .audio import AudioRole, read_audio
 from .disks import read_drives
 from .formatting import CELSIUS
 from .gpu import read_gpus
 from .i18n import _
+from .load import read_system_load
+from .power import read_battery
 from .reports import (
+    audio_report,
+    battery_report,
     cpu_report,
     drives_report,
     gpu_memory_report,
     gpu_report,
+    load_report,
     memory_report,
     os_report,
     summary_report,
@@ -42,7 +48,12 @@ class Resource:
 
     gather blocks (it may sample the processor or run a helper program), so it
     must run off Orca's main thread. layer_key and layer_modifiers are the key
-    inside the command layer; shortcut is the digit used with Orca+Shift.
+    inside the command layer; shortcut is the digit used with Orca+Shift, and
+    is empty for a resource with no default shortcut of its own.
+
+    A resource without a shortcut is still a full command: it appears in
+    Orca's keybinding preferences unbound, so it can be given a key there,
+    and it always has a layer key. The digits only go up to nine.
     """
 
     name: str
@@ -51,7 +62,7 @@ class Resource:
     failure: str
     layer_key: str
     layer_modifiers: int
-    shortcut: str
+    shortcut: str = ""
 
 
 def _copy_hint(text: str) -> str:
@@ -165,6 +176,49 @@ RESOURCES: tuple[Resource, ...] = (
         layer_key="g",
         layer_modifiers=keybindings.SHIFT_MODIFIER_MASK,
         shortcut="9",
+    ),
+    Resource(
+        name="battery",
+        # Translators: Description of the battery command.
+        description=_copy_hint(
+            _("Presents battery charge, whether it is charging, and the time remaining.")
+        ),
+        gather=lambda _options: battery_report(read_battery()),
+        # Translators: Reported when the battery command fails.
+        failure=_("Failed to get battery information."),
+        layer_key="b",
+        layer_modifiers=keybindings.NO_MODIFIER_MASK,
+        shortcut="0",
+    ),
+    Resource(
+        name="audio_output",
+        # Translators: Description of the audio output command.
+        description=_copy_hint(_("Presents the audio output device and its volume.")),
+        gather=lambda _options: audio_report(AudioRole.OUTPUT, read_audio(AudioRole.OUTPUT)),
+        # Translators: Reported when the audio output command fails.
+        failure=_("Failed to get audio output information."),
+        layer_key="a",
+        layer_modifiers=keybindings.NO_MODIFIER_MASK,
+    ),
+    Resource(
+        name="audio_input",
+        # Translators: Description of the audio input command.
+        description=_copy_hint(_("Presents the audio input device and its volume.")),
+        gather=lambda _options: audio_report(AudioRole.INPUT, read_audio(AudioRole.INPUT)),
+        # Translators: Reported when the audio input command fails.
+        failure=_("Failed to get audio input information."),
+        layer_key="a",
+        layer_modifiers=keybindings.SHIFT_MODIFIER_MASK,
+    ),
+    Resource(
+        name="load",
+        # Translators: Description of the system load command.
+        description=_copy_hint(_("Presents the load averages and component temperatures.")),
+        gather=lambda options: load_report(read_system_load(), options.temperature_unit),
+        # Translators: Reported when the system load command fails.
+        failure=_("Failed to get system load information."),
+        layer_key="l",
+        layer_modifiers=keybindings.NO_MODIFIER_MASK,
     ),
 )
 
